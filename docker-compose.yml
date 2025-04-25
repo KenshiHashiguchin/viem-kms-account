@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  geth:
+    image: ethereum/client-go:v1.13.5
+    container_name: geth-node
+    ports:
+      - "8545:8545"  # HTTP RPC
+      - "8546:8546"  # WebSocket RPC
+      - "30303:30303"  # P2P
+    volumes:
+      - ./geth-data:/root/.ethereum
+    tty: true
+    command: >
+      --dev
+      --http
+      --http.addr=0.0.0.0
+      --http.port=8545
+      --http.api=eth,net,web3,personal,debug
+      --http.corsdomain="*"
+      --ws
+      --ws.addr=0.0.0.0
+      --ws.port=8546
+      --ws.api=eth,net,web3,personal,debug
+      --ws.origins="*"
+      --allow-insecure-unlock
+      --networkid=1337
+    healthcheck:
+      test: ["CMD", "geth", "attach", "--exec", "eth.blockNumber", "http://localhost:8545"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
