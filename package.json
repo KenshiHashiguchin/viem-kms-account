@@ -2,8 +2,14 @@
   "name": "viem-kms-account",
   "version": "0.1.0",
   "description": "A viem Custom Account implementation that uses AWS KMS to sign transactions and messages",
-  "main": "dist/src/index.js",
-  "types": "dist/src/index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "scripts": {
     "test": "jest",
     "test:e2e": "./scripts/run-e2e-tests.sh",
