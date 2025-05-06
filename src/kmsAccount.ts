@@ -5,7 +5,7 @@ import {
   Hash,
   hashTypedData,
   Hex,
-  keccak256,
+  keccak256, LocalAccount,
   serializeTransaction,
   SerializeTransactionFn,
   SignableMessage,
@@ -30,11 +30,15 @@ export interface KmsSignerLike {
  * @param signer KmsSignerLike instance
  * @returns A viem-compatible CustomSource
  */
-export async function toKmsAccount(signer: KmsSignerLike): Promise<CustomSource> {
+export async function toKmsAccount(signer: KmsSignerLike): Promise<LocalAccount> {
 
   let address: Address = await signer.getAddress() as Address;
+  const publicKey = '0x' + '00'.repeat(33) as Hex;
   return {
     address,
+    publicKey: publicKey,// TODO
+    source: 'aws-kms',
+    type: 'local',
 
     // Optional sign method for signing raw hashes
     sign: async ({ hash }: { hash: Hash }): Promise<Hex> => {
