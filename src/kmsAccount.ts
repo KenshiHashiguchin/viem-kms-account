@@ -32,10 +32,10 @@ export interface KmsSignerLike {
  */
 export async function toKmsAccount(signer: KmsSignerLike): Promise<LocalAccount> {
 
-  let address: Address = await signer.getAddress() as Address;
+  let address = await signer.getAddress();
   const publicKey = '0x' + '00'.repeat(33) as Hex;
   return {
-    address,
+    address: '0x' + address as Address,
     publicKey: publicKey,// TODO
     source: 'aws-kms',
     type: 'local',
